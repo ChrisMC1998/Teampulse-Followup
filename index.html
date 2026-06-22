@@ -1193,9 +1193,48 @@
             if (saved) {
                 followUps = JSON.parse(saved);
             } else {
-                // No demo data - start with empty array
-                followUps = [];
+                followUps = buildDemoData();
+                localStorage.setItem('followUps', JSON.stringify(followUps));
             }
+        }
+
+        function buildDemoData() {
+            const today = getLocalSystemDate();
+            const d = (offset) => {
+                const dt = new Date(); dt.setDate(dt.getDate() + offset);
+                return dt.toISOString().split('T')[0];
+            };
+            const ts = (offset) => {
+                const dt = new Date(); dt.setDate(dt.getDate() + offset);
+                return dt.toISOString();
+            };
+            return [
+                { id:1,  orderId:'PA2024061-001', location:'Riverside Medical Center',     status:'Pending',             urgency:'High',   type:'Promise', followupDate:today, remarks:'Client promised payment by EOD. Confirm receipt and send acknowledgment.', completed:false, completedAt:null, createdAt:ts(-1) },
+                { id:2,  orderId:'PA2024061-002', location:'Oakwood Legal Associates',     status:'In Progress',         urgency:'High',   type:'Contact', followupDate:today, remarks:'Awaiting signed COR documents. Second attempt — escalate if no response by noon.', completed:false, completedAt:null, createdAt:ts(-2) },
+                { id:3,  orderId:'PA2024061-003', location:'Summit Diagnostics Lab',       status:'Waiting on Response', urgency:'Medium', type:'Promise', followupDate:today, remarks:'Pending insurance verification. Contact billing dept for update on claim status.', completed:false, completedAt:null, createdAt:ts(-3) },
+                { id:4,  orderId:'PA2024061-004', location:'Greenfield Clinic',            status:'Escalated',           urgency:'High',   type:'Contact', followupDate:today, remarks:'No response for 5 days. Manager escalation required. File COR concern immediately.', completed:false, completedAt:null, createdAt:ts(-5) },
+                { id:5,  orderId:'PA2024061-005', location:'Harbor View Hospital',         status:'In Progress',         urgency:'Medium', type:'Promise', followupDate:today, remarks:'Partial payment received. Follow up on remaining balance of $1,240.', completed:false, completedAt:null, createdAt:ts(-2) },
+                { id:6,  orderId:'PA2024061-006', location:'Northside Pharmacy',           status:'Pending',             urgency:'Low',    type:'Contact', followupDate:today, remarks:'Routine check-in on order status. Confirm delivery timeline with ops team.', completed:false, completedAt:null, createdAt:ts(-1) },
+                { id:7,  orderId:'PA2024060-011', location:'Pinebrook Rehabilitation',    status:'Pending',             urgency:'High',   type:'Promise', followupDate:d(-3), remarks:'Client missed payment deadline. Urgent callback required — account at risk.', completed:false, completedAt:null, createdAt:ts(-7) },
+                { id:8,  orderId:'PA2024060-012', location:'Eastgate Surgery Center',     status:'Escalated',           urgency:'High',   type:'Contact', followupDate:d(-2), remarks:'COR issue unresolved for 2 weeks. Legal team notified. Awaiting resolution memo.', completed:false, completedAt:null, createdAt:ts(-10) },
+                { id:9,  orderId:'PA2024060-013', location:'Willow Creek Dental',         status:'Waiting on Response', urgency:'Medium', type:'Promise', followupDate:d(-1), remarks:'Promised callback not received. Attempt contact via alternate number on file.', completed:false, completedAt:null, createdAt:ts(-5) },
+                { id:10, orderId:'PA2024060-014', location:'Sunset Urgent Care',          status:'Pending',             urgency:'Medium', type:'Contact', followupDate:d(-4), remarks:'Documentation not submitted on time. Resend request with updated deadline.', completed:false, completedAt:null, createdAt:ts(-8) },
+                { id:11, orderId:'PA2024060-015', location:'Valley Orthopaedics',         status:'In Progress',         urgency:'High',   type:'Promise', followupDate:d(-2), remarks:'Partial authorization received. Need full approval before processing order.', completed:false, completedAt:null, createdAt:ts(-6) },
+                { id:12, orderId:'PA2024062-021', location:'Clearwater Pediatrics',       status:'Pending',             urgency:'Low',    type:'Contact', followupDate:d(1),  remarks:'Scheduled check-in post-service delivery. Confirm satisfaction and close case.', completed:false, completedAt:null, createdAt:ts(-1) },
+                { id:13, orderId:'PA2024062-022', location:'Crestview Radiology',         status:'In Progress',         urgency:'Medium', type:'Promise', followupDate:d(2),  remarks:'Client committed to full settlement by Thursday. Confirm wire transfer details.', completed:false, completedAt:null, createdAt:ts(-2) },
+                { id:14, orderId:'PA2024062-023', location:'Maple Grove Assisted Living', status:'Pending',             urgency:'Low',    type:'Contact', followupDate:d(3),  remarks:'Quarterly account review. Prepare summary of all open orders before call.', completed:false, completedAt:null, createdAt:ts(0) },
+                { id:15, orderId:'PA2024062-024', location:'Ironwood Physical Therapy',   status:'Waiting on Response', urgency:'Medium', type:'Promise', followupDate:d(2),  remarks:'Insurance pre-auth pending. Follow up with carrier ref #INS-88421 for status.', completed:false, completedAt:null, createdAt:ts(-1) },
+                { id:16, orderId:'PA2024062-025', location:'Blue Ridge ENT Clinic',       status:'In Progress',         urgency:'High',   type:'Contact', followupDate:d(1),  remarks:'High-value account — CEO escalation expected. Prepare talking points before call.', completed:false, completedAt:null, createdAt:ts(0) },
+                { id:17, orderId:'PA2024062-026', location:'Lakeside Cancer Center',      status:'Pending',             urgency:'Medium', type:'Promise', followupDate:d(4),  remarks:'Awaiting final sign-off on revised service agreement. Review clause 7b before follow-up.', completed:false, completedAt:null, createdAt:ts(0) },
+                { id:18, orderId:'PA2024059-031', location:'Maplewood General Hospital',  status:'Completed',           urgency:'High',   type:'Promise', followupDate:d(-5), remarks:'Full payment confirmed. Receipt issued and case closed. Account in good standing.', completed:true, completedAt:ts(-4), createdAt:ts(-9) },
+                { id:19, orderId:'PA2024059-032', location:'Cedar Falls Neurology',       status:'Resolved',            urgency:'Medium', type:'Contact', followupDate:d(-6), remarks:'COR concern resolved after 3rd contact. Client satisfied with outcome.', completed:true, completedAt:ts(-5), createdAt:ts(-10) },
+                { id:20, orderId:'PA2024059-033', location:'Horizon Wellness Clinic',     status:'Completed',           urgency:'Low',    type:'Contact', followupDate:d(-7), remarks:'Routine follow-up completed. No issues reported. File archived.', completed:true, completedAt:ts(-6), createdAt:ts(-11) },
+                { id:21, orderId:'PA2024059-034', location:'Sterling Eye Associates',     status:'Resolved',            urgency:'High',   type:'Promise', followupDate:d(-8), remarks:'Disputed invoice resolved. Credit note issued. Client confirmed acceptance.', completed:true, completedAt:ts(-7), createdAt:ts(-12) },
+                { id:22, orderId:'PA2024059-035', location:'Brightside Mental Health',    status:'Completed',           urgency:'Medium', type:'Contact', followupDate:d(-4), remarks:'All documentation submitted and verified. Case closed successfully.', completed:true, completedAt:ts(-3), createdAt:ts(-8) },
+                { id:23, orderId:'PA2024059-036', location:'Pinecrest Cardiology',        status:'Completed',           urgency:'High',   type:'Promise', followupDate:d(-3), remarks:'Payment plan agreed and first installment received. Monitoring for next 30 days.', completed:true, completedAt:ts(-2), createdAt:ts(-7) },
+                { id:24, orderId:'PA2024059-037', location:'Sunrise Dermatology',         status:'Resolved',            urgency:'Low',    type:'Contact', followupDate:d(-9), remarks:'Service inquiry resolved. Sent updated FAQ and escalation contact details.', completed:true, completedAt:ts(-8), createdAt:ts(-13) },
+                { id:25, orderId:'PA2024059-038', location:'Redwood Surgical Group',      status:'Completed',           urgency:'Medium', type:'Promise', followupDate:d(-6), remarks:'Verbal commitment converted to written agreement. Filed in CRM.', completed:true, completedAt:ts(-5), createdAt:ts(-10) },
+            ];
         }
         
         // Save data to localStorage
